@@ -1,4 +1,4 @@
-# docker build --pull --tag praguebest-sylius-bundle-dev.8.1:latest . && docker push praguebest-sylius-bundle-dev.8.1:latest
+# docker build --pull --tag jaroslavtyc/praguebest-sylius-plugin-dev.8.1:latest . && docker push jaroslavtyc/praguebest-sylius-plugin-dev.8.1:latest
 
 # the different stages of this Dockerfile are meant to be built into separate images
 # https://docs.docker.com/compose/compose-file/#target
