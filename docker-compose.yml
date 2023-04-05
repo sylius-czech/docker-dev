@@ -16,7 +16,7 @@ services:
             MAILER_URL: "smtp://mailhog:1025"
             PHP_DATE_TIMEZONE: "${PHP_DATE_TIMEZONE:-UTC}"
         volumes:
-            - .:/srv/sylius:rw,delegated
+            - ./docker/php/docker-entrypoint.sh:/usr/local/bin/docker-entrypoint:rw,delegated # optional, to propagate bootstrap changes into Docker without image rebuild
 
     mysql_sylius_rbac:
         image: mysql:8.0

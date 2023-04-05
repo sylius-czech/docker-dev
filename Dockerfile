@@ -25,6 +25,8 @@ RUN apk add --no-cache \
         build-base \
         linux-headers \
         mysql-client \
+        # shadow adds usermod and groupmod
+        shadow \
         bash \
         yarn \
     ;
@@ -59,3 +61,4 @@ WORKDIR /srv/sylius
 ENV APP_ENV=test
 
 ENTRYPOINT ["docker-entrypoint"]
+CMD ["php-fpm"]
