@@ -1,7 +1,7 @@
 version: "3.4"
 
 services:
-    php:
+    php-sylius-plugin-dev:
         hostname: php_sylius_plugin_dev # as a DNS alias between containers
         image: 'jaroslavtyc/praguebest-sylius-plugin-dev.8.1:latest'
         environment:
@@ -16,7 +16,9 @@ services:
             MAILER_URL: "smtp://mailhog:1025"
             PHP_DATE_TIMEZONE: "${PHP_DATE_TIMEZONE:-UTC}"
         volumes:
-            - ./docker/php/docker-entrypoint.sh:/usr/local/bin/docker-entrypoint:rw,delegated # optional, to propagate bootstrap changes into Docker without image rebuild
+#            - ./docker/php/docker-entrypoint.sh:/usr/local/bin/docker-entrypoint:rw,delegated # to propagate bootstrap changes into Docker without this image rebuild
+#            - ./docker/php/docker-change-user-id.sh:/usr/local/bin/docker-change-user-id:rw,delegated # to propagate bootstrap changes into Docker without this image rebuild
+            - ./:/usr/local/sylius-plugin-dev # to detect user from Docker host
 
     mysql_sylius_rbac:
         image: mysql:8.0

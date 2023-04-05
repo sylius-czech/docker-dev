@@ -27,6 +27,7 @@ RUN apk add --no-cache \
         mysql-client \
         # shadow adds usermod and groupmod
         shadow \
+        sudo \
         bash \
         yarn \
     ;
@@ -48,6 +49,7 @@ COPY docker/php/test/opcache.ini    $PHP_INI_DIR/conf.d/opcache.ini
 COPY docker/php/test/xdebug.ini     $PHP_INI_DIR/conf.d/xdebug.ini
 
 COPY docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+COPY docker/php/docker-change-user-id.sh /usr/local/bin/docker-change-user-id
 RUN chmod +x /usr/local/bin/docker-entrypoint
 
 # Composer is not allowed to be run under root / sudo / superuser by default. See docker/php/docker-entrypoint.sh how local user is used.
