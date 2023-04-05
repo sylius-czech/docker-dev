@@ -1,0 +1,31 @@
+version: "3.4"
+
+services:
+    php:
+        container_name: php_sorting
+        hostname: php_sorting # as a DNS alias between containers
+        image: 'praguebest-sylius-bundle-dev.8.1:latest'
+        environment:
+            XDEBUG_CONFIG: "client_host=172.17.0.1 client_port=9003 remote_log=/tmp/xdebug.log"
+            XDEBUG_TRIGGER: "yes" # to start XDebug for EVERY request (use `export XDEBUG_TRIGGER: "yes"` to enable it in CLI and `unset XDEBUG_TRIGGER` to disable for CLI again - in browser use same-named variable in GET, POST or COOKIE, or legacy named via some browser extension). For a single shot can be used inline environment variable like `XDEBUG_TRIGGER=yes ./bin/console
+            PHP_IDE_CONFIG: "serverName=SyliusBundleDev" # key for IDE XDebug profile
+            APP_ENV: "test"
+            APP_DEBUG: "1"
+            APP_SECRET: "${APP_SECRET:-EDITME}"
+            # set MYSQL_ variables in .env file or in docker-compose.override.yml
+            DATABASE_URL: "mysql://${MYSQL_USER:-sylius}:${MYSQL_PASSWORD:-pass}@mysql_sylius_rbac:3306/${MYSQL_DATABASE:-sylius}"
+            MAILER_URL: "smtp://mailhog:1025"
+            PHP_DATE_TIMEZONE: "${PHP_DATE_TIMEZONE:-UTC}"
+        volumes:
+            - .:/srv/sylius:rw,delegated
+
+    mysql_sylius_rbac:
+        image: mysql:8.0
+        environment:
+            - MYSQL_ROOT_PASSWORD=pass_root
+            - MYSQL_DATABASE=sylius
+            - MYSQL_USER=sylius
+            - MYSQL_PASSWORD=pass
+        ports:
+            # set MYSQL_HOST_MAPPING_PORT variable in .env file or in docker-compose.override.yml
+            - "${MYSQL_HOST_MAPPING_PORT:-33306}:3306"
