@@ -58,7 +58,10 @@ groupmod --gid "${CURRENT_GID}" "${REQUIRED_USER}" # allow to set GID manually f
 # Allow user to log in to use development tools
 usermod --shell /bin/bash "${REQUIRED_USER}"
 
-echo -e echo "Switching to user ${REQUIRED_USER}...\n" \
+echo -e echo "Switching to user ${REQUIRED_USER}\n" \
   sudo su "${REQUIRED_USER}\n" \
   echo You are now "'$(whoami) $(id)'" \
   > /root/.bashrc
+
+echo -e 'export PATH="/usr/local/bin:$PATH"' "\n" \
+  > /home/www-data/.bashrc
