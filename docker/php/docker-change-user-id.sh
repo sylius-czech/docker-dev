@@ -58,8 +58,9 @@ groupmod --gid "${CURRENT_GID}" "${REQUIRED_USER}" # allow to set GID manually f
 # Allow user to log in to use development tools
 usermod --shell /bin/bash "${REQUIRED_USER}"
 
+# has to --preserve-env to have env variables from docker-compose.yml available for switched user
 echo -e echo "Switching to user ${REQUIRED_USER}\n" \
-  sudo su "${REQUIRED_USER}\n" \
+  sudo --preserve-env su "${REQUIRED_USER}\n" \
   echo You are now "'$(whoami) $(id)'" \
   > /root/.bashrc
 
