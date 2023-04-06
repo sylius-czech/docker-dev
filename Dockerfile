@@ -25,6 +25,8 @@ RUN apk add --no-cache \
         build-base \
         linux-headers \
         mysql-client \
+        # to avoid ERROR 1045 (28000): Plugin caching_sha2_password could not be loaded: Error loading shared library /usr/lib/mariadb/plugin/caching_sha2_password.so: No such file or directory
+        mariadb-connector-c \
         # shadow adds usermod and groupmod
         shadow \
         sudo \
