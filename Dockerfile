@@ -1,9 +1,9 @@
-# docker build --pull --tag jaroslavtyc/praguebest-sylius-plugin-dev.8.1:latest . && docker push jaroslavtyc/praguebest-sylius-plugin-dev.8.1:latest
+# docker build --pull --tag jaroslavtyc/praguebest-sylius-plugin-dev.8.0:latest . && docker push jaroslavtyc/praguebest-sylius-plugin-dev.8.0:latest
 
 # the different stages of this Dockerfile are meant to be built into separate images
 # https://docs.docker.com/compose/compose-file/#target
 
-ARG PHP_VERSION=8.1
+ARG PHP_VERSION=8.0
 ARG ALPINE_VERSION=3.15
 ARG COMPOSER_VERSION=latest
 ARG PHP_EXTENSION_INSTALLER_VERSION=latest
