@@ -1,18 +1,24 @@
-# docker build --pull --tag jaroslavtyc/praguebest-sylius-plugin-dev.8.0:latest . && docker push jaroslavtyc/praguebest-sylius-plugin-dev.8.0:latest
+# docker build --pull --target sylius-plugin-php --tag jaroslavtyc/praguebest-sylius-plugin-dev-php:8.0 . && docker push jaroslavtyc/praguebest-sylius-plugin-dev-php:8.0
+# docker build --pull --target sylius-plugin-nginx --tag jaroslavtyc/praguebest-sylius-plugin-dev-nginx:1.24 . && docker push jaroslavtyc/praguebest-sylius-plugin-dev-nginx:1.24
+
+# test images works
+# docker run jaroslavtyc/praguebest-sylius-plugin-dev-php:8.0
+# docker run jaroslavtyc/praguebest-sylius-plugin-dev-nginx:1.24
 
 # the different stages of this Dockerfile are meant to be built into separate images
 # https://docs.docker.com/compose/compose-file/#target
 
 ARG PHP_VERSION=8.0
-ARG ALPINE_VERSION=3.15
+ARG NGINX_VERSION=1.24.0
+ARG ALPINE_VERSION=3.16
 ARG COMPOSER_VERSION=latest
 ARG PHP_EXTENSION_INSTALLER_VERSION=latest
 
 FROM composer:${COMPOSER_VERSION} AS composer
 
-FROM mlocati/php-extension-installer:${PHP_EXTENSION_INSTALLER_VERSION} AS php_extension_installer
+FROM mlocati/php-extension-installer:${PHP_EXTENSION_INSTALLER_VERSION} AS php-extension-installer
 
-FROM php:${PHP_VERSION}-fpm-alpine${ALPINE_VERSION} AS php_tests
+FROM php:${PHP_VERSION}-fpm-alpine${ALPINE_VERSION} AS sylius-plugin-php
 
 # persistent / runtime deps
 RUN apk add --no-cache \
@@ -34,7 +40,7 @@ RUN apk add --no-cache \
         yarn \
     ;
 
-COPY --from=php_extension_installer /usr/bin/install-php-extensions /usr/local/bin/
+COPY --from=php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 
 # default PHP image extensions
 # ctype curl date dom fileinfo filter ftp hash iconv json libxml mbstring mysqlnd openssl pcre PDO pdo_sqlite Phar
@@ -66,3 +72,12 @@ ENV APP_ENV=test
 
 ENTRYPOINT ["docker-entrypoint"]
 CMD ["php-fpm"]
+
+# taken from https://github.com/Sylius/Sylius-Standard/blob/1.12/Dockerfile
+# note: there is no nginx:${NGINX_VERSION}-alpine3.16 version https://hub.docker.com/_/nginx/tags?page=1&name=alpine3
+FROM nginx:${NGINX_VERSION}-alpine3.17 AS sylius-plugin-nginx
+
+# taken from https://github.com/Sylius/Sylius-Standard/blob/1.12/docker/nginx/conf.d/default.conf
+COPY docker/nginx/conf.d/default.conf /etc/nginx/conf.d/
+
+WORKDIR /srv/sylius

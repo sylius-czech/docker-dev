@@ -2,8 +2,7 @@ version: "3.4"
 
 services:
     php-sylius-plugin-dev:
-        hostname: php_sylius_plugin_dev # as a DNS alias between containers
-        image: 'jaroslavtyc/praguebest-sylius-plugin-dev.8.1:latest'
+        image: 'jaroslavtyc/praguebest-sylius-plugin-dev-php:8.0'
         environment:
             XDEBUG_CONFIG: "client_host=172.17.0.1 client_port=9003 remote_log=/tmp/xdebug.log"
             XDEBUG_TRIGGER: "yes" # to start XDebug for EVERY request (use `export XDEBUG_TRIGGER: "yes"` to enable it in CLI and `unset XDEBUG_TRIGGER` to disable for CLI again - in browser use same-named variable in GET, POST or COOKIE, or legacy named via some browser extension). For a single shot can be used inline environment variable like `XDEBUG_TRIGGER=yes ./bin/console
@@ -16,11 +15,21 @@ services:
             MAILER_URL: "smtp://mailhog:1025"
             PHP_DATE_TIMEZONE: "${PHP_DATE_TIMEZONE:-UTC}"
         volumes:
-#            - ./docker/php/docker-entrypoint.sh:/usr/local/bin/docker-entrypoint:rw,delegated # to propagate bootstrap changes into Docker without this image rebuild
-#            - ./docker/php/docker-change-user-id.sh:/usr/local/bin/docker-change-user-id:rw,delegated # to propagate bootstrap changes into Docker without this image rebuild
+            # - ./docker/php/docker-entrypoint.sh:/usr/local/bin/docker-entrypoint:rw,delegated # to propagate bootstrap changes into Docker without this image rebuild
+            # - ./docker/php/docker-change-user-id.sh:/usr/local/bin/docker-change-user-id:rw,delegated # to propagate bootstrap changes into Docker without this image rebuild
             - ./:/usr/local/sylius-plugin-dev # to detect user from Docker host
 
-    mysql_sylius_rbac:
+    nginx-sylius-plugin-dev:
+        image: 'jaroslavtyc/praguebest-sylius-plugin-dev-nginx:1.24'
+        ports:
+            # Host port 0 is for "first available"
+            # How to change it:
+            # - set NGINX_HOST_MAPPING_PORT variable in .env file for example
+            # - or extends ports in docker-compose.override.yml
+            # To find out used port use `docker ps` and look for PORTS column to see mapped host port, including IP it can be for example http://0.0.0.0:32771/ which is roughly equivalent to http://127.0.0.1:32771/ for web browser
+            - "${NGINX_HOST_MAPPING_PORT:-0}:80"
+
+    mysql-sylius-rbac:
         image: mysql:8.0
         environment:
             - MYSQL_ROOT_PASSWORD=pass_root
@@ -28,5 +37,9 @@ services:
             - MYSQL_USER=sylius
             - MYSQL_PASSWORD=pass
         ports:
-            # set MYSQL_HOST_MAPPING_PORT variable in .env file or in docker-compose.override.yml
-            - "${MYSQL_HOST_MAPPING_PORT:-33306}:3306"
+            # Host port 0 is for "first available"
+            # How to change it:
+            # - set MYSQL_HOST_MAPPING_PORT variable in .env file for example
+            # - or extends ports in docker-compose.override.yml
+            # To find out used port use `docker ps` and look for PORTS column to see mapped host port, including IP it can be for example 0.0.0.0:32772 which is roughly equivalent to 127.0.0.1:32772 for internal network requests
+            - "${MYSQL_HOST_MAPPING_PORT:-0}:80"
