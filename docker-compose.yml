@@ -38,6 +38,8 @@ services:
             # - or extends ports in docker-compose.override.yml
             # To find out used port use `docker ps` and look for PORTS column to see mapped host port, including IP it can be for example http://0.0.0.0:32771/ which is roughly equivalent to http://127.0.0.1:32771/ for web browser
             - "${NGINX_HOST_MAPPING_PORT:-0}:80"
+        volumes:
+            - .:/srv/sylius:rw,delegated
 
     mysql-sylius-plugin-dev:
         container_name: mysql-sylius-plugin-dev
