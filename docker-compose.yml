@@ -18,6 +18,14 @@ services:
             # - ./docker/php/docker-entrypoint.sh:/usr/local/bin/docker-entrypoint:rw,delegated # to propagate bootstrap changes into Docker without this image rebuild
             # - ./docker/php/docker-change-user-id.sh:/usr/local/bin/docker-change-user-id:rw,delegated # to propagate bootstrap changes into Docker without this image rebuild
             - ./:/usr/local/sylius-plugin-dev # to detect user from Docker host
+        ports:
+            # mapped PHP web port is useful to connect to PHP built-in web server
+            # Host port 0 is for "first available"
+            # How to change it:
+            # - set PHP_HOST_MAPPING_PORT variable in .env file for example
+            # - or extends ports in docker-compose.override.yml
+            # To find out used port use `docker ps` and look for PORTS column to see mapped host port, including IP it can be for example http://0.0.0.0:32770/ which is roughly equivalent to http://127.0.0.1:32770/ for web browser
+            - "${PHP_HOST_MAPPING_PORT:-0}:80"
 
     nginx-sylius-plugin-dev:
         image: 'jaroslavtyc/praguebest-sylius-plugin-dev-nginx:1.24'
@@ -29,7 +37,7 @@ services:
             # To find out used port use `docker ps` and look for PORTS column to see mapped host port, including IP it can be for example http://0.0.0.0:32771/ which is roughly equivalent to http://127.0.0.1:32771/ for web browser
             - "${NGINX_HOST_MAPPING_PORT:-0}:80"
 
-    mysql-sylius-rbac:
+    mysql-sylius-plugin-dev:
         image: mysql:8.0
         environment:
             - MYSQL_ROOT_PASSWORD=pass_root
