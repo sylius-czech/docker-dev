@@ -18,7 +18,7 @@ services:
         volumes:
             # - ./docker/php/docker-entrypoint.sh:/usr/local/bin/docker-entrypoint:rw,delegated # to propagate bootstrap changes into Docker without this image rebuild
             # - ./docker/php/docker-change-user-id.sh:/usr/local/bin/docker-change-user-id:rw,delegated # to propagate bootstrap changes into Docker without this image rebuild
-            - ./:/usr/local/sylius-plugin-dev # to detect user from Docker host
+            - .:/srv/sylius:rw,delegated # also used to detect user from Docker host
         ports:
             # mapped PHP web port is useful to connect to PHP built-in web server
             # Host port 0 is for "first available"
