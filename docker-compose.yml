@@ -3,6 +3,7 @@ version: "3.4"
 services:
     php:
         container_name: php-sylius-plugin-dev
+        hostname: php-sylius-plugin-dev
         image: 'jaroslavtyc/praguebest-sylius-plugin-dev-php:8.0'
         environment:
             XDEBUG_CONFIG: "client_host=172.17.0.1 client_port=9003 remote_log=/tmp/xdebug.log"
@@ -12,7 +13,7 @@ services:
             APP_DEBUG: "1"
             APP_SECRET: "${APP_SECRET:-EDITME}"
             # set MYSQL_ variables in .env file or in docker-compose.override.yml
-            DATABASE_URL: "mysql://${MYSQL_USER:-sylius}:${MYSQL_PASSWORD:-pass}@mysql_sylius_rbac:3306/${MYSQL_DATABASE:-sylius}"
+            DATABASE_URL: "mysql://${MYSQL_USER:-sylius}:${MYSQL_PASSWORD:-pass}@mysql-sylius-plugin-dev:3306/${MYSQL_DATABASE:-sylius}"
             MAILER_URL: "smtp://mailhog:1025"
             PHP_DATE_TIMEZONE: "${PHP_DATE_TIMEZONE:-UTC}"
         volumes:
