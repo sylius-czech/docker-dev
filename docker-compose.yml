@@ -1,7 +1,8 @@
 version: "3.4"
 
 services:
-    php-sylius-plugin-dev:
+    php:
+        container_name: php-sylius-plugin-dev
         image: 'jaroslavtyc/praguebest-sylius-plugin-dev-php:8.0'
         environment:
             XDEBUG_CONFIG: "client_host=172.17.0.1 client_port=9003 remote_log=/tmp/xdebug.log"
@@ -28,6 +29,7 @@ services:
             - "${PHP_HOST_MAPPING_PORT:-0}:80"
 
     nginx-sylius-plugin-dev:
+        container_name: nginx-sylius-plugin-dev
         image: 'jaroslavtyc/praguebest-sylius-plugin-dev-nginx:1.24'
         ports:
             # Host port 0 is for "first available"
@@ -38,6 +40,7 @@ services:
             - "${NGINX_HOST_MAPPING_PORT:-0}:80"
 
     mysql-sylius-plugin-dev:
+        container_name: mysql-sylius-plugin-dev
         image: mysql:8.0
         environment:
             - MYSQL_ROOT_PASSWORD=pass_root
