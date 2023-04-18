@@ -3,12 +3,10 @@ set -e # stop execution instantly as a query exits while having a non-zero statu
 
 # first arg is `-f` or `--some-option`
 if [ "${1#-}" != "$1" ]; then
-	set -- php-fpm "$@"
+  set -- php-fpm "$@"
 fi
 
-if [ "$(id -u)" -eq 0 ]; then # running as root, lets try to switch to current host user
-  bash /usr/local/bin/docker-change-user-id www-data
-  sudo --preserve-env su www-data # has to --preserve-env to have env variables from docker-compose.yml available for switched user
-fi
+# set current host UID to Docker user www-data to keep same ownership, also change user to www-data on login to terminal
+bash /usr/local/bin/docker-change-user-id www-data
 
 exec docker-php-entrypoint "$@" # for input arguments represented by "$@" see CMD ["php-fpm"] at the end of Dockerfile
