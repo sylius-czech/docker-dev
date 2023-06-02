@@ -64,5 +64,5 @@ echo -e echo "Switching to user '${REQUIRED_USER}'\n" \
   >/root/.bashrc
 
 echo -e 'export PATH="/usr/local/bin:$PATH"' "\n" \
-  echo 'echo You are now "''$(whoami) $(id)''"' \
+  echo 'You are now "''$(whoami) $(id)''"' \
   >/home/node/.bashrc
