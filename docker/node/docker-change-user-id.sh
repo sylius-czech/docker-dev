@@ -58,10 +58,11 @@ groupmod --gid "${CURRENT_GID}" "${REQUIRED_USER}" # allow to set GID manually f
 usermod --shell /bin/bash "${REQUIRED_USER}"
 
 # has to --preserve-env to have env variables from docker-compose.yml available for switched user
-echo -e echo "Switching to user ${REQUIRED_USER}\n" \
+echo -e echo "Switching to user '${REQUIRED_USER}'\n" \
   sudo --preserve-env su "${REQUIRED_USER}\n" \
   echo You are now "'$(whoami) $(id)'" \
   >/root/.bashrc
 
 echo -e 'export PATH="/usr/local/bin:$PATH"' "\n" \
+  echo You are now "'$(whoami) $(id)'" \
   >/home/node/.bashrc
