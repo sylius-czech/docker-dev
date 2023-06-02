@@ -1,9 +1,5 @@
 # Rebuild by calling `./build.sh`
 
-# test images works
-# docker run jaroslavtyc/praguebest-sylius-plugin-dev-php:8.0
-# docker run jaroslavtyc/praguebest-sylius-plugin-dev-nginx:1.24
-
 # the different stages of this Dockerfile are meant to be built into separate images
 # https://docs.docker.com/compose/compose-file/#target
 
