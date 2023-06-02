@@ -9,6 +9,8 @@ fi
 # set current host UID to Docker user node to keep same ownership, also change user to node on login to terminal
 bash /usr/local/bin/docker-change-user-id node
 
-#docker-entrypoint.sh "$@" # for input arguments represented by "$@" see CMD ["node"] at the end of Dockerfile
+docker-entrypoint.sh "$@" # for input arguments represented by "$@" see CMD ["node"] at the end of Dockerfile
 
-tail -f /dev/null # just a little trick to do not exit running container without any job
+if [ "$1" = 'node' ]; then
+  tail -f /dev/null # just a little trick to do not exit running container without any job
+fi
