@@ -1,8 +1,13 @@
-# Docker for local Sylius plugin development
+# Docker for local Sylius development
 
-All-in-one environment for easier development of Sylius plugin.
+- **Sylius plugin** 
+  - All-in-one environment for easier development of Sylius plugin. See `phpX.Y` git branches.
+- **SFX**
+  - Node.js images for StorefrontX development. See `sfx-nodeX.Y` git branches.
 
 ## Usage
+
+### Sylius Plugin
 
 1. Copy [docker-compose.yml](docker-compose.yml) to your plugin dir
 2. Open terminal (command line) inside your plugin directory
