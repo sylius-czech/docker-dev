@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
-PHP_TAG='docker-registry.praguebest.cz:5000/sylius-plugin-dev-php:8.2'
-docker build --pull --target sylius-plugin-php --tag "$PHP_TAG" . && docker push "$PHP_TAG"
+NODE_VERSION=$(grep -oP 'ARG NODE_VERSION=\K[0-9]+[.][0-9]+' Dockerfile)
 
-NGINX_TAG='docker-registry.praguebest.cz:5000/sylius-plugin-dev-nginx:1.24'
-docker build --pull --target sylius-plugin-nginx --tag "$NGINX_TAG" . && docker push "$NGINX_TAG"
+NODE_TAG="docker-registry.praguebest.cz:5000/sylius-storefrontx-dev-node:${NODE_VERSION}"
+
+docker build --pull --target sylius-storefrontx-dev --tag "$NODE_TAG" .
+
+(docker run "$NODE_TAG" sh -c 'echo "IT works!"' && docker push "$NODE_TAG") || (echo 'DOCKER IMAGE IS BROKEN' && exit 1)
