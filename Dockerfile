@@ -62,9 +62,6 @@ ENV PATH="${PATH}:/usr/local/bin"
 
 WORKDIR /srv/sylius
 
-# build for test
-ENV APP_ENV=test
-
 ENTRYPOINT ["docker-entrypoint"]
 CMD ["php-fpm"]
 
