@@ -55,6 +55,9 @@ COPY docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 COPY docker/php/docker-change-user-id.sh /usr/local/bin/docker-change-user-id
 RUN chmod +x /usr/local/bin/docker-entrypoint
 
+COPY docker/php/.bash_aliases   /home/www-data/.bash_aliases
+RUN chown -R www-data:www-data /home/www-data
+
 # Composer is not allowed to be run under root / sudo / superuser by default. See docker/php/docker-entrypoint.sh how local user is used.
 # https://getcomposer.org/doc/03-cli.md#composer-allow-superuser
 # ENV COMPOSER_ALLOW_SUPERUSER=1
