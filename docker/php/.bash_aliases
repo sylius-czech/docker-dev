@@ -1,3 +1,3 @@
 alias ll='ls -alF'
 alias cu='php -dxdebug.mode=off $(which composer) update'
-alias ccs='composer checks'
+alias ccs='php -dxdebug.mode=off $(which composer) checks'
