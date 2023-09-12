@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e # stop execution instantly as a query exits while having a non-zero status, useful when you need to know the error location in the running code
 
-REQUIRED_USER=$1
+REQUIRED_USER=nginx
 
 CURRENT_UID=0
 CURRENT_GID=0
@@ -62,12 +62,3 @@ echo -e echo "Switching to user ${REQUIRED_USER}\n" \
   sudo --preserve-env su "${REQUIRED_USER}\n" \
   echo You are now "'$(whoami) $(id)'" \
   >/root/.bashrc
-
-echo -e 'export PATH="/usr/local/bin:$PATH"
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
-' \
-  >/home/www-data/.bashrc
-
-chown -R www-data:www-data /home/www-data
