@@ -75,4 +75,19 @@ FROM nginx:${NGINX_VERSION}-alpine3.17 AS sylius-plugin-nginx
 # taken from https://github.com/Sylius/Sylius-Standard/blob/1.12/docker/nginx/conf.d/default.conf
 COPY docker/nginx/conf.d/default.conf /etc/nginx/conf.d/
 
+# persistent / runtime deps
+RUN apk add --no-cache \
+        acl \
+        linux-headers \
+        # shadow adds usermod and groupmod
+        shadow \
+        sudo \
+        bash \
+    ;
+
+# /docker-entrypoint.d is a "magic" dir with auto-included scripts on Nginx Docker image start
+# see https://github.com/nginxinc/docker-nginx/blob/master/entrypoint/docker-entrypoint.sh
+COPY docker/nginx/docker-entrypoint.d/docker-change-user-id.sh /docker-entrypoint.d/
+RUN chmod +x /docker-entrypoint.d/docker-change-user-id.sh
+
 WORKDIR /srv/sylius
