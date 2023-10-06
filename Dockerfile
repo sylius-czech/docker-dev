@@ -6,7 +6,7 @@
 # https://docs.docker.com/compose/compose-file/#target
 
 ARG NODE_VERSION=18.16
-ARG ALPINE_VERSION=3.16
+ARG ALPINE_VERSION=3.18
 ARG COMPOSER_VERSION=latest
 ARG PHP_EXTENSION_INSTALLER_VERSION=latest
 
