@@ -70,7 +70,7 @@ CMD ["php-fpm"]
 
 # taken from https://github.com/Sylius/Sylius-Standard/blob/1.12/Dockerfile
 # note: there is no nginx:${NGINX_VERSION}-alpine3.16 version https://hub.docker.com/_/nginx/tags?page=1&name=alpine3
-FROM nginx:${NGINX_VERSION}-alpine3.17 AS sylius-plugin-nginx
+FROM nginx:${NGINX_VERSION}-alpine${ALPINE_VERSION} AS sylius-plugin-nginx
 
 # taken from https://github.com/Sylius/Sylius-Standard/blob/1.12/docker/nginx/conf.d/default.conf
 COPY docker/nginx/conf.d/default.conf /etc/nginx/conf.d/
