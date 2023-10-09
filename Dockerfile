@@ -6,6 +6,7 @@
 ARG PHP_VERSION=8.1
 ARG NGINX_VERSION=1.25
 ARG ALPINE_VERSION=3.18
+ARG NODE_VERSION=18
 ARG COMPOSER_VERSION=latest
 ARG PHP_EXTENSION_INSTALLER_VERSION=latest
 
@@ -91,3 +92,19 @@ COPY docker/nginx/docker-entrypoint.d/docker-change-user-id.sh /docker-entrypoin
 RUN chmod +x /docker-entrypoint.d/docker-change-user-id.sh
 
 WORKDIR /srv/sylius
+
+FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION} AS sylius_node
+
+WORKDIR /srv/sylius
+
+RUN set -eux; \
+	apk add --no-cache --virtual .build-deps \
+		g++ \
+		gcc \
+		make \
+	;
+
+COPY docker/node/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+RUN chmod +x /usr/local/bin/docker-entrypoint
+
+ENTRYPOINT ["docker-entrypoint"]
