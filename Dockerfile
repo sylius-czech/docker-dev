@@ -71,10 +71,10 @@ CMD ["php-fpm"]
 
 # taken from https://github.com/Sylius/Sylius-Standard/blob/1.12/Dockerfile
 # note: there is no nginx:${NGINX_VERSION}-alpine3.16 version https://hub.docker.com/_/nginx/tags?page=1&name=alpine3
-FROM nginx:${NGINX_VERSION}-alpine${ALPINE_VERSION} AS sylius-plugin-nginx
+FROM nginx:${NGINX_VERSION}-alpine${ALPINE_VERSION} AS sylius-app-nginx
 
 # taken from https://github.com/Sylius/Sylius-Standard/blob/1.12/docker/nginx/conf.d/default.conf
-COPY docker/nginx/conf.d/default.conf /etc/nginx/conf.d/
+COPY docker/nginx/conf.d/sylius-app.conf /etc/nginx/conf.d/
 
 # persistent / runtime deps
 RUN apk add --no-cache \
@@ -93,7 +93,13 @@ RUN chmod +x /docker-entrypoint.d/docker-change-user-id.sh
 
 WORKDIR /srv/sylius
 
-FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION} AS sylius_node
+# taken from https://github.com/Sylius/Sylius-Standard/blob/1.12/Dockerfile
+# note: there is no nginx:${NGINX_VERSION}-alpine3.16 version https://hub.docker.com/_/nginx/tags?page=1&name=alpine3
+FROM sylius-app-nginx AS sylius-plugin-nginx
+
+COPY docker/nginx/conf.d/sylius-plugin.conf /etc/nginx/conf.d/
+
+FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION} AS sylius-plugin-node
 
 WORKDIR /srv/sylius
 
