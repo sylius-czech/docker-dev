@@ -74,7 +74,7 @@ CMD ["php-fpm"]
 FROM nginx:${NGINX_VERSION}-alpine${ALPINE_VERSION} AS sylius-app-nginx
 
 # taken from https://github.com/Sylius/Sylius-Standard/blob/1.12/docker/nginx/conf.d/default.conf
-COPY docker/nginx/conf.d/sylius-app.conf /etc/nginx/conf.d/
+COPY docker/nginx/conf.d/sylius-app.conf /etc/nginx/conf.d/default.conf
 
 # persistent / runtime deps
 RUN apk add --no-cache \
@@ -97,7 +97,7 @@ WORKDIR /srv/sylius
 # note: there is no nginx:${NGINX_VERSION}-alpine3.16 version https://hub.docker.com/_/nginx/tags?page=1&name=alpine3
 FROM sylius-app-nginx AS sylius-plugin-nginx
 
-COPY docker/nginx/conf.d/sylius-plugin.conf /etc/nginx/conf.d/
+COPY docker/nginx/conf.d/sylius-plugin.conf /etc/nginx/conf.d/default.conf
 
 FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION} AS sylius-plugin-node
 
