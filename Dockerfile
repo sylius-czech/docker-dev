@@ -53,8 +53,9 @@ COPY docker/php/test/opcache.ini    $PHP_INI_DIR/conf.d/opcache.ini
 COPY docker/php/test/xdebug.ini     $PHP_INI_DIR/conf.d/xdebug.ini
 
 COPY docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
-COPY docker/php/docker-change-user-id.sh /usr/local/bin/docker-change-user-id
 RUN chmod +x /usr/local/bin/docker-entrypoint
+COPY docker/docker-change-user-id.sh /usr/local/bin/docker-change-user-id
+RUN chmod +x /usr/local/bin/docker-change-user-id
 
 COPY docker/php/.bash_aliases   /home/www-data/.bash_aliases
 RUN chown -R www-data:www-data /home/www-data
@@ -108,9 +109,15 @@ RUN set -eux; \
 		g++ \
 		gcc \
 		make \
+        # shadow adds usermod and groupmod
+        shadow \
+        sudo \
+        bash \
 	;
 
 COPY docker/node/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 RUN chmod +x /usr/local/bin/docker-entrypoint
+COPY docker/docker-change-user-id.sh /usr/local/bin/docker-change-user-id
+RUN chmod +x /usr/local/bin/docker-change-user-id
 
 ENTRYPOINT ["docker-entrypoint"]

@@ -2,6 +2,7 @@
 set -e # stop execution instantly as a query exits while having a non-zero status, useful when you need to know the error location in the running code
 
 REQUIRED_USER=$1
+REQUIRED_GROUP=${2:-$REQUIRED_USER}
 
 CURRENT_UID=0
 CURRENT_GID=0
@@ -68,6 +69,6 @@ if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 ' \
-  >/home/www-data/.bashrc
+  >"/home/${REQUIRED_USER}/.bashrc"
 
-chown -R www-data:www-data /home/www-data
+chown -R "${REQUIRED_USER}:${REQUIRED_GROUP}" "/home/${REQUIRED_USER}"
