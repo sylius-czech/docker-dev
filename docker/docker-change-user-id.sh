@@ -53,7 +53,7 @@ if [ -z "${CURRENT_GID}" ] || [ "${CURRENT_GID}" -eq 0 ]; then
 fi
 
 usermod --uid "${CURRENT_UID}" "${REQUIRED_USER}"  # allow to set UID manually from host
-groupmod --gid "${CURRENT_GID}" "${REQUIRED_USER}" # allow to set GID manually from host
+groupmod --gid "${CURRENT_GID}" "${REQUIRED_GROUP}" # allow to set GID manually from host
 
 # Allow user to log in to use development tools
 usermod --shell /bin/bash "${REQUIRED_USER}"

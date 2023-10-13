@@ -43,6 +43,9 @@ COPY --from=php-extension-installer /usr/bin/install-php-extensions /usr/local/b
 # posix readline Reflection session SimpleXML sodium SPL sqlite3 standard tokenizer xml xmlreader xmlwriter zlib
 RUN install-php-extensions apcu exif gd intl pdo_mysql opcache zip
 
+RUN docker-php-ext-configure pcntl --enable-pcntl \
+  && docker-php-ext-install pcntl;
+
 RUN pecl channel-update pecl.php.net \
     && pecl install xdebug \
     ;
