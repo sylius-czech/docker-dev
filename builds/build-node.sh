@@ -3,8 +3,8 @@
 # APP & PLUGIN
 NODE_VERSION=$(grep -oP 'ARG NODE_VERSION=\K[0-9]+([.][0-9]+)?' Dockerfile)
 NODE_BASE_NAMES=(
-  "docker-registry.praguebest.cz:5000/sylius-app-dev-node"
-  "docker-registry.praguebest.cz:5000/sylius-plugin-dev-node"
+  "jaroslavtyc/sylius-app-dev-node"
+  "jaroslavtyc/sylius-plugin-dev-node"
 )
 for NODE_BASE_NAME in ${NODE_BASE_NAMES[*]}; do
   NODE_TAG="${NODE_BASE_NAME}:${NODE_VERSION}"
